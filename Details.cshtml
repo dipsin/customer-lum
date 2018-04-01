@@ -1,0 +1,61 @@
+﻿@model CustomeInfo.Customer
+
+@{
+    ViewBag.Title = "Details";
+}
+
+
+
+<h2>Details</h2>
+
+<div>
+    <h4>Customer</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerAge)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerAge)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerEmail)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CustomerEmail)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CustomerImage)
+        </dt>
+
+        <dd>     
+            @{var imgsrc = "";
+                if (Model.CustomerImage != null)
+                {
+                    var base64image = Convert.ToBase64String(Model.CustomerImage);
+                    imgsrc = string.Format("data:image/jpg;base64,{0}", base64image);
+                }
+
+                <img alt='' src='@imgsrc' border: 1px solid #ddd; border-radius: 4px; padding: 5px; width: 80px; />
+            }             
+            
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.CustomerID }) |*@
+    @Html.ActionLink("Back to List", "Index")
+</p>
