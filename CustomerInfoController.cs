@@ -48,17 +48,36 @@ namespace CustomeInfo.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "CustomerName,CustomerAge,CustomerEmail,CustomerImage,imagePath")] Customer customer)
+        public async Task<ActionResult> Create(HttpPostedFileBase file,[Bind(Include = "CustomerName,CustomerAge,CustomerEmail,CustomerImage,imagePath")] Customer customer)
         {
             if (ModelState.IsValid)
             {
-                if (customer.imagePath != null)
-                { 
-                         var uImagePath = @"C:\Dipti\CLASSES\MVC PROJECT\Image-Fan\" + customer.imagePath;
-                         //@"C:\Dipti\CLASSES\MVC PROJECT\Image-Fan\User1.jpg";
-                        //var uImagePath = "C:\\Dipti\\CLASSES\\MVC PROJECT\\Image-Fan\\User1.jpg";
-                        customer.CustomerImage = ImageToBinary(uImagePath);
-                 }
+                var path = "";
+                if(file!=null)
+                {
+                    if (file.ContentLength > 0)
+                    {
+                        if(Path.GetExtension(file.FileName).ToLower() == ".jpg" || Path.GetExtension(file.FileName).ToLower() == ".png" || Path.GetExtension(file.FileName).ToLower() == ".gif" || Path.GetExtension(file.FileName).ToLower() == ".jpeg")
+                        {
+                            path = Path.Combine(Server.MapPath("~/Content/Upload"), file.FileName);
+                            file.SaveAs(path);
+
+                            customer.CustomerImage = ImageToBinary(path);          
+                                         
+                        }
+                    }
+
+                }
+                //if (customer.imagePath != null)
+                //{
+                //       //var uImagePath = @"C:\Dipti\CLASSES\MVC PROJECT\Image-Fan\" + customer.imagePath;
+                //       var uImagePath = Path.Combine(Server.MapPath("~/Content/Upload"), customer.imagePath.ToString());
+                    
+                //    //mRegister.file.SaveAs(path);
+                //    //@"C:\Dipti\CLASSES\MVC PROJECT\Image-Fan\User1.jpg";
+                //    //var uImagePath = "C:\\Dipti\\CLASSES\\MVC PROJECT\\Image-Fan\\User1.jpg";
+                //    customer.CustomerImage = ImageToBinary(uImagePath);
+                // }
 
                 db.Customers.Add(customer);
                 await db.SaveChangesAsync();

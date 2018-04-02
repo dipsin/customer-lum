@@ -40,7 +40,15 @@
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.CustomerImage)
+           @{var imgsrc = "";
+               if (Model.CustomerImage != null)
+               {
+                   var base64image = Convert.ToBase64String(Model.CustomerImage);
+                   imgsrc = string.Format("data:image/jpg;base64,{0}", base64image);
+               }
+           }
+
+            <img alt='' src='@imgsrc' border: 1px solid #ddd; border-radius: 4px; padding: 5px; width: 80px; />
         </dd>
 
     </dl>
